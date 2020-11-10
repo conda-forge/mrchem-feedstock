@@ -30,6 +30,9 @@ package:
 source:
   url: https://github.com/MRChemSoft/mrchem/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
+  patches:
+    # fix runtime failure when reading basis set files for SAD guess
+    - patches/remove_getline_macro.patch
 
 build:
   number: {{ build }}
@@ -92,3 +95,4 @@ extra:
   recipe-maintainers:
     - robertodr
     - bjorgve
+    - stigrj
