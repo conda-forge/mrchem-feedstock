@@ -1,0 +1,166 @@
+diff --git a/src/initial_guess/sad.cpp b/src/initial_guess/sad.cpp
+index 88d3c260..1f9d6320 100644
+--- a/src/initial_guess/sad.cpp
++++ b/src/initial_guess/sad.cpp
+@@ -163,7 +163,7 @@ void initial_guess::sad::project_atomic_densities(double prec, Density &rho_tot,
+     std::string sad_path;
+     for (auto n : {sad_basis_source_dir(), sad_basis_install_dir()}) {
+         if (mrcpp::details::directory_exists(n)) {
+-            sad_path = n;
++            sad_path = print_utils::rtrim_copy(n);
+             break;
+         }
+     }
+diff --git a/src/utils/gto_utils/Intgrl.cpp b/src/utils/gto_utils/Intgrl.cpp
+index a8b75696..e609b3c2 100644
+--- a/src/utils/gto_utils/Intgrl.cpp
++++ b/src/utils/gto_utils/Intgrl.cpp
+@@ -1,22 +1,21 @@
+-#include "MRCPP/Printer"
++#include "Intgrl.h"
+ 
+-#include "chemistry/Nucleus.h"
++#include <string>
++
++#include <MRCPP/Printer>
+ 
++#include "chemistry/Nucleus.h"
+ #include "AOBasis.h"
+-#include "Intgrl.h"
+ 
+ using mrcpp::GaussExp;
+ 
+-#define GETLINE(X, S)                                                                                                  \
+-    if (not getline(X, S)) MSG_ABORT("Unexpected end of file while reading basis sets!");
+-
+ namespace mrchem {
+ namespace gto_utils {
+ 
+ Intgrl::Intgrl(const std::string &file) {
+     std::ifstream ifs(file.c_str());
+     if (not ifs) MSG_ABORT("Failed to open basis set file: " << file);
+-    readIntgrlFile(ifs);
++    readIntgrlFile(file, ifs);
+     ifs.close();
+ }
+ 
+@@ -29,11 +28,13 @@ Intgrl::~Intgrl() {
+     }
+ }
+ 
+-void Intgrl::readIntgrlFile(std::ifstream &ifs) {
++void Intgrl::readIntgrlFile(const std::string &fname, std::ifstream &ifs) {
+     int nTypes;
+     std::string line;
+-    GETLINE(ifs, line); // First line is a comment
+-    GETLINE(ifs, line); // Second line is number of atom types
++    // First line is a comment
++    if (not std::getline(ifs, line)) MSG_ABORT("Unexpected end of file " << fname << "  while reading basis sets!");
++    // Second line is number of atom types
++    if (not std::getline(ifs, line)) MSG_ABORT("Unexpected end of file " << fname << "  while reading basis sets!");
+     std::istringstream iss(line);
+     iss >> nTypes;
+     for (int i = 0; i < nTypes; i++) { readAtomBlock(ifs); }
+diff --git a/src/utils/gto_utils/Intgrl.h b/src/utils/gto_utils/Intgrl.h
+index fe504fd6..eb7ff5cd 100644
+--- a/src/utils/gto_utils/Intgrl.h
++++ b/src/utils/gto_utils/Intgrl.h
+@@ -2,7 +2,7 @@
+  */
+ #pragma once
+ 
+-#include "MRCPP/Gaussians"
++#include <MRCPP/Gaussians>
+ 
+ #include <fstream>
+ #include <string>
+@@ -34,7 +34,7 @@ protected:
+     std::vector<Nucleus *> nuclei;
+     std::vector<AOBasis *> basis;
+ 
+-    void readIntgrlFile(std::ifstream &ifs);
++    void readIntgrlFile(const std::string &fname, std::ifstream &ifs);
+     void readContractionBlock(std::ifstream &ifs, AOBasis &basis, int l);
+     void readAtomBlock(std::ifstream &ifs);
+     void readAtomData(std::ifstream &ifs, int n_atoms, double z);
+diff --git a/src/utils/print_utils.cpp b/src/utils/print_utils.cpp
+index 45d6e74d..a17712ca 100644
+--- a/src/utils/print_utils.cpp
++++ b/src/utils/print_utils.cpp
+@@ -23,11 +23,14 @@
+  * <https://mrchem.readthedocs.io/>
+  */
+ 
++#include <algorithm>
++#include <cctype>
+ #include <iomanip>
+ #include <iostream>
++#include <locale>
+ 
+-#include "MRCPP/Printer"
+-#include "MRCPP/Timer"
++#include <MRCPP/Printer>
++#include <MRCPP/Timer>
+ 
+ #include "print_utils.h"
+ 
+@@ -192,4 +195,42 @@ void print_utils::qmfunction(int level, const std::string &txt, const QMFunction
+     mrcpp::print::tree(level, txt, nodes, memory, time);
+ }
+ 
++// trim from start (in place)
++void print_utils::ltrim(std::string &s) {
++    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
++        return !std::isspace(ch);
++    }));
++}
++
++// trim from end (in place)
++void print_utils::rtrim(std::string &s) {
++    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
++        return !std::isspace(ch);
++    }).base(), s.end());
++}
++
++// trim from both ends (in place)
++void print_utils::trim(std::string &s) {
++    ltrim(s);
++    rtrim(s);
++}
++
++// trim from start (copying)
++std::string print_utils::ltrim_copy(std::string s) {
++    ltrim(s);
++    return s;
++}
++
++// trim from end (copying)
++std::string print_utils::rtrim_copy(std::string s) {
++    rtrim(s);
++    return s;
++}
++
++// trim from both ends (copying)
++std::string print_utils::trim_copy(std::string s) {
++    trim(s);
++    return s;
++}
++
+ } // namespace mrchem
+diff --git a/src/utils/print_utils.h b/src/utils/print_utils.h
+index 6ec06160..28846fe5 100644
+--- a/src/utils/print_utils.h
++++ b/src/utils/print_utils.h
+@@ -41,6 +41,12 @@ void qmfunction(int level, const std::string &txt, const QMFunction &func, mrcpp
+ std::string dbl_to_str(double d, int p, bool sci);
+ std::vector<double> eigen_to_vector(const DoubleVector &inp, double thrs);
+ std::vector<double> eigen_to_vector(const DoubleMatrix &inpm, double thrs);
++void ltrim(std::string &s);
++void rtrim(std::string &s);
++void trim(std::string &s); 
++std::string ltrim_copy(std::string s);
++std::string rtrim_copy(std::string s);
++std::string trim_copy(std::string s);
+ 
+ } // namespace print_utils
+ } // namespace mrchem
