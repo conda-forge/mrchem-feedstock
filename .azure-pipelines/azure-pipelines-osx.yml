@@ -8,6 +8,9 @@ jobs:
     vmImage: macOS-10.15
   strategy:
     matrix:
+      osx_64_mpimpichpython3.6.____73_pypy:
+        CONFIG: osx_64_mpimpichpython3.6.____73_pypy
+        UPLOAD_PACKAGES: 'True'
       osx_64_mpimpichpython3.6.____cpython:
         CONFIG: osx_64_mpimpichpython3.6.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -17,6 +20,9 @@ jobs:
       osx_64_mpimpichpython3.8.____cpython:
         CONFIG: osx_64_mpimpichpython3.8.____cpython
         UPLOAD_PACKAGES: 'True'
+      osx_64_mpinompipython3.6.____73_pypy:
+        CONFIG: osx_64_mpinompipython3.6.____73_pypy
+        UPLOAD_PACKAGES: 'True'
       osx_64_mpinompipython3.6.____cpython:
         CONFIG: osx_64_mpinompipython3.6.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -25,6 +31,9 @@ jobs:
         UPLOAD_PACKAGES: 'True'
       osx_64_mpinompipython3.8.____cpython:
         CONFIG: osx_64_mpinompipython3.8.____cpython
+        UPLOAD_PACKAGES: 'True'
+      osx_64_mpiopenmpipython3.6.____73_pypy:
+        CONFIG: osx_64_mpiopenmpipython3.6.____73_pypy
         UPLOAD_PACKAGES: 'True'
       osx_64_mpiopenmpipython3.6.____cpython:
         CONFIG: osx_64_mpiopenmpipython3.6.____cpython
