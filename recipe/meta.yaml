@@ -1,7 +1,7 @@
 {% set name = "mrchem" %}
 {% set version = "1.0.1" %}
 {% set sha256 = "1a8a667f4c81601daa43e1339d91f1594fb5525fe0869dce5e187c49430a769c" %}
-{% set build = 0 %}
+{% set build = 1 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -62,8 +62,12 @@ test:
     # Verify existence and execution
     - test -f $PREFIX/bin/mrchem
     - $PREFIX/bin/mrchem --version
-    - ls -l $SP_DIR/mrchem                                                            # [not win]
+    - ls -l $SP_DIR/mrchem                                                # [not win]
     # Inspect linkage
+    - ldd -v $PREFIX/bin/mrchem.x                                         # [linux]
+    - otool -L $PREFIX/bin/mrchem.x                                       # [osx]
+    - conda inspect linkages --show-files --groupby=dependency $PKG_NAME  # [not win]
+    - conda inspect objects -p $PREFIX $PKG_NAME                          # [osx]
 
 outputs:
   - name: mrchem
