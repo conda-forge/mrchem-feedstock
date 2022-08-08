@@ -48,13 +48,14 @@ requirements:
     - {{ compiler('cxx') }}
     - ninja
     - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
+    - catch2 >=2.3,<3.0
+    - nlohmann_json
+    - eigen
   host:
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
     - {{ mpi }}    # [mpi != 'nompi']
-    - nlohmann_json
     - xcfun
-    - {{ pin_compatible('eigen', max_pin='x.x') }}
     - mrcpp * {{ mpi_prefix }}_*
     - python
 
