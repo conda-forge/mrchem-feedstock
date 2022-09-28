@@ -2,12 +2,21 @@ BUILD_TYPE="Release"
 CXXFLAGS="${CXXFLAGS//-march=nocona}"
 CXXFLAGS="${CXXFLAGS//-mtune=haswell}"
 
-if [ -n "$mpi" ] & [ "$mpi" != "nompi" ]; then
-  export CXX=mpicxx
+export CXX=$(basename ${CXX})
+
+if [[ ! -z "$mpi" && "$mpi" != "nompi" ]]; then
   MPI_SUPPORT=ON
 else
-  export CXX=$(basename ${CXX})
   MPI_SUPPORT=OFF
+fi
+
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+  # This is only used by open-mpi's mpicc
+  # ignored in other cases
+  export OMPI_CC="$CC"
+  export OMPI_CXX="$CXX"
+  export OMPI_FC="$FC"
+  export OPAL_PREFIX="$PREFIX"
 fi
 
 # configure
