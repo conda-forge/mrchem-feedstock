@@ -47,6 +47,7 @@ requirements:
     - cmake >=3.12
     - {{ compiler('cxx') }}
     - ninja
+    - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
   host:
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
