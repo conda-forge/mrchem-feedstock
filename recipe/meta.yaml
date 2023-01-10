@@ -34,7 +34,6 @@ source:
 build:
   number: {{ build }}
   skip: true  # [win]
-  binary_relocation: true
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
     - {{ pin_subpackage('mrchem', max_pin='x.x') }}
@@ -42,16 +41,16 @@ build:
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - python  # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
     - cmake >=3.12
     - {{ compiler('cxx') }}
     - ninja
     - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
   host:
     - llvm-openmp  # [osx]
-    - libgomp      # [linux]
-    - {{ mpi }}    # [mpi != 'nompi']
+    - libgomp  # [linux]
+    - {{ mpi }}  # [mpi != 'nompi']
     - nlohmann_json
     - xcfun
     - {{ pin_compatible('eigen', max_pin='x.x') }}
@@ -65,20 +64,20 @@ test:
     # Verify existence and execution
     - test -f $PREFIX/bin/mrchem
     - $PREFIX/bin/mrchem --version
-    - ls -l $SP_DIR/mrchem                                                # [not win]
+    - ls -l $SP_DIR/mrchem  # [not win]
     # Inspect linkage
-    - ldd -v $PREFIX/bin/mrchem.x                                         # [linux]
-    - otool -L $PREFIX/bin/mrchem.x                                       # [osx]
+    - ldd -v $PREFIX/bin/mrchem.x  # [linux]
+    - otool -L $PREFIX/bin/mrchem.x  # [osx]
 
 outputs:
   - name: mrchem
     files:
-      - bin/mrchem              # [not win]
-      - bin/mrchem.x            # [not win]
-      - include/MRChem          # [not win]
-      - lib/libmrchem*          # [not win]
+      - bin/mrchem  # [not win]
+      - bin/mrchem.x  # [not win]
+      - include/MRChem  # [not win]
+      - lib/libmrchem*  # [not win]
       - share/MRChem/sad_basis  # [not win]
-      - {{ SP_DIR }}/mrchem     # [not win]
+      - {{ SP_DIR }}/mrchem  # [not win]
 
 about:
   home: https://github.com/MRChemSoft/mrchem
