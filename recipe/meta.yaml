@@ -1,7 +1,7 @@
 {% set name = "mrchem" %}
-{% set version = "1.1.1" %}
-{% set sha256 = "9926778edf8bb49fd4cde513faf6a887800ecf1791d1a71c0edae228ba6da646" %}
-{% set build = 1 %}
+{% set version = "1.1.2" %}
+{% set sha256 = "b4e74ad5ee89fc5e8a7329474cf0fa93155423f93a1f95c8c2888f7c53e353ea" %}
+{% set build = 0 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
