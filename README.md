@@ -1,11 +1,11 @@
-About mrchem
-============
+About mrchem-feedstock
+======================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/mrchem-feedstock/blob/main/LICENSE.txt)
 
 Home: https://github.com/MRChemSoft/mrchem
 
 Package license: [LGPL-3.0-or-later](https://opensource.org/licenses/LGPL-3.0)
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/mrchem-feedstock/blob/main/LICENSE.txt)
 
 Summary: MultiResolution Chemistry
 
