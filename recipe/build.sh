@@ -44,8 +44,8 @@ if [ "$(uname)" = "Linux" ]; then
 fi
 
 # test
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
-ctest -j${CPU_COUNT} --output-on-failure --verbose
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" || "$target_platform" != linux-ppc64le ]]; then
+  ctest -j${CPU_COUNT} --output-on-failure --verbose
 fi
 
 # install
