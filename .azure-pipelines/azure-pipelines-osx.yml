@@ -5,7 +5,7 @@
 jobs:
 - job: osx
   pool:
-    vmImage: macOS-11
+    vmImage: macOS-12
   strategy:
     matrix:
       osx_64_mpimpichpython3.10.____cpython:
@@ -14,8 +14,14 @@ jobs:
       osx_64_mpimpichpython3.11.____cpython:
         CONFIG: osx_64_mpimpichpython3.11.____cpython
         UPLOAD_PACKAGES: 'True'
+      osx_64_mpimpichpython3.12.____cpython:
+        CONFIG: osx_64_mpimpichpython3.12.____cpython
+        UPLOAD_PACKAGES: 'True'
       osx_64_mpimpichpython3.8.____cpython:
         CONFIG: osx_64_mpimpichpython3.8.____cpython
+        UPLOAD_PACKAGES: 'True'
+      osx_64_mpimpichpython3.9.____73_pypy:
+        CONFIG: osx_64_mpimpichpython3.9.____73_pypy
         UPLOAD_PACKAGES: 'True'
       osx_64_mpimpichpython3.9.____cpython:
         CONFIG: osx_64_mpimpichpython3.9.____cpython
@@ -26,8 +32,14 @@ jobs:
       osx_64_mpinompipython3.11.____cpython:
         CONFIG: osx_64_mpinompipython3.11.____cpython
         UPLOAD_PACKAGES: 'True'
+      osx_64_mpinompipython3.12.____cpython:
+        CONFIG: osx_64_mpinompipython3.12.____cpython
+        UPLOAD_PACKAGES: 'True'
       osx_64_mpinompipython3.8.____cpython:
         CONFIG: osx_64_mpinompipython3.8.____cpython
+        UPLOAD_PACKAGES: 'True'
+      osx_64_mpinompipython3.9.____73_pypy:
+        CONFIG: osx_64_mpinompipython3.9.____73_pypy
         UPLOAD_PACKAGES: 'True'
       osx_64_mpinompipython3.9.____cpython:
         CONFIG: osx_64_mpinompipython3.9.____cpython
@@ -38,8 +50,14 @@ jobs:
       osx_64_mpiopenmpipython3.11.____cpython:
         CONFIG: osx_64_mpiopenmpipython3.11.____cpython
         UPLOAD_PACKAGES: 'True'
+      osx_64_mpiopenmpipython3.12.____cpython:
+        CONFIG: osx_64_mpiopenmpipython3.12.____cpython
+        UPLOAD_PACKAGES: 'True'
       osx_64_mpiopenmpipython3.8.____cpython:
         CONFIG: osx_64_mpiopenmpipython3.8.____cpython
+        UPLOAD_PACKAGES: 'True'
+      osx_64_mpiopenmpipython3.9.____73_pypy:
+        CONFIG: osx_64_mpiopenmpipython3.9.____73_pypy
         UPLOAD_PACKAGES: 'True'
       osx_64_mpiopenmpipython3.9.____cpython:
         CONFIG: osx_64_mpiopenmpipython3.9.____cpython
@@ -49,6 +67,9 @@ jobs:
         UPLOAD_PACKAGES: 'True'
       osx_arm64_mpimpichpython3.11.____cpython:
         CONFIG: osx_arm64_mpimpichpython3.11.____cpython
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpimpichpython3.12.____cpython:
+        CONFIG: osx_arm64_mpimpichpython3.12.____cpython
         UPLOAD_PACKAGES: 'True'
       osx_arm64_mpimpichpython3.8.____cpython:
         CONFIG: osx_arm64_mpimpichpython3.8.____cpython
@@ -62,6 +83,9 @@ jobs:
       osx_arm64_mpinompipython3.11.____cpython:
         CONFIG: osx_arm64_mpinompipython3.11.____cpython
         UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpinompipython3.12.____cpython:
+        CONFIG: osx_arm64_mpinompipython3.12.____cpython
+        UPLOAD_PACKAGES: 'True'
       osx_arm64_mpinompipython3.8.____cpython:
         CONFIG: osx_arm64_mpinompipython3.8.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -74,13 +98,18 @@ jobs:
       osx_arm64_mpiopenmpipython3.11.____cpython:
         CONFIG: osx_arm64_mpiopenmpipython3.11.____cpython
         UPLOAD_PACKAGES: 'True'
+      osx_arm64_mpiopenmpipython3.12.____cpython:
+        CONFIG: osx_arm64_mpiopenmpipython3.12.____cpython
+        UPLOAD_PACKAGES: 'True'
       osx_arm64_mpiopenmpipython3.8.____cpython:
         CONFIG: osx_arm64_mpiopenmpipython3.8.____cpython
         UPLOAD_PACKAGES: 'True'
       osx_arm64_mpiopenmpipython3.9.____cpython:
         CONFIG: osx_arm64_mpiopenmpipython3.9.____cpython
         UPLOAD_PACKAGES: 'True'
+    maxParallel: 19
   timeoutInMinutes: 360
+  variables: {}
 
   steps:
   # TODO: Fast finish on azure pipelines?
