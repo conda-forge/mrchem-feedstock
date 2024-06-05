@@ -38,11 +38,6 @@ cmake ${CMAKE_ARGS} \
 cd build
 cmake --build . -- -j${CPU_COUNT} -v -d stats
 
-# unset so we can run tests
-if [ "$(uname)" = "Linux" ]; then
-  export OMPI_MCA_plm_rsh_agent=""
-fi
-
 # test
 if [[ ("${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "") && "$target_platform" != linux-ppc64le ]]; then
   ctest -j${CPU_COUNT} --output-on-failure --verbose
