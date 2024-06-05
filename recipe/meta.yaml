@@ -67,7 +67,7 @@ test:
     - $PREFIX/bin/mrchem --version
     - ls -l $SP_DIR/mrchem  # [not win]
     # Inspect linkage
-    - ldd -v $PREFIX/bin/mrchem.x  # [linux]
+    - ldd -v $PREFIX/bin/mrchem.x  # [linux and build_platform == target_platform]
     - otool -L $PREFIX/bin/mrchem.x  # [osx]
 
 outputs:
