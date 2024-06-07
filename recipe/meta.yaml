@@ -1,7 +1,7 @@
 {% set name = "mrchem" %}
 {% set version = "1.1.4" %}
 {% set sha256 = "80724ee337d3d48af559342ee090d883c90662d2d60a1c5219a6a18c9bd32d6c" %}
-{% set build = 0 %}
+{% set build = 1 %}
 
 # recipe-lint fails if mpi is undefined
 {% set mpi = mpi or 'nompi' %}
@@ -45,6 +45,7 @@ requirements:
     - cross-python_{{ target_platform }}  # [build_platform != target_platform]
     - cmake >=3.12
     - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
     - ninja
     - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
   host:
@@ -66,7 +67,7 @@ test:
     - $PREFIX/bin/mrchem --version
     - ls -l $SP_DIR/mrchem  # [not win]
     # Inspect linkage
-    - ldd -v $PREFIX/bin/mrchem.x  # [linux]
+    - ldd -v $PREFIX/bin/mrchem.x  # [linux and build_platform == target_platform]
     - otool -L $PREFIX/bin/mrchem.x  # [osx]
 
 outputs:
